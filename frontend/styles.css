@@ -1,3 +1,4 @@
+/*index.html*/
 /* 全局样式 */
 body {
     font-family: Arial, sans-serif;
@@ -52,5 +53,68 @@ button:hover {
     background-color: #e8f5e9;
     padding: 15px;
     border-radius: 8px;
+    word-break: break-word;
+}
+
+/*dashboard.html*/
+/* 全局样式 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+/* 主容器样式 */
+.container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 400px;
+}
+
+/* 按钮样式 */
+button {
+    padding: 12px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* 特殊按钮样式 */
+.logout {
+    background-color: #d9534f;
+}
+
+.logout:hover {
+    background-color: #c9302c;
+}
+
+/* 动作按钮的布局 */
+.actions {
+    margin: 20px 0;
+}
+
+/* 余额显示区域 */
+.balance-section {
+    background-color: #e8f5e9;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
     word-break: break-word;
 }
