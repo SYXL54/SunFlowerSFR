@@ -1,6 +1,26 @@
 <!--# 起始界面-->
 <!DOCTYPE html>
 <html lang="zh-CN">
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    .modal-content {
+        background-color: white;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 300px;
+        text-align: center;
+    }
+</style>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,9 +36,7 @@
         <button id="connectWalletBtn">连接钱包</button>
 
         <div class="nav-buttons">
-            <form action="{{ url_for('login_page') }}" method="post" style="display: inline;">
-                <button type="submit">Login</button>
-            </form>
+            <button id="loginBtn" onclick="login()">Login</button>
             <form action="{{ url_for('register_page') }}" method="post" style="display: inline;">
                 <button type="submit">Register</button>
             </form>
@@ -28,8 +46,18 @@
             <p>已连接钱包地址：</p>
             <p id="walletAddress"></p>
         </div>
+
+        <!-- 弹框 -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <p id="statusMessage"></p>
+                <button id="registerRedirect" style="display:none;">Go to Register</button>
+                <button onclick="closeModal()">Close</button>
+            </div>
+        </div>
     </div>
 
-    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script src="{{ url_for('static', filename='app.js') }}">
+    </script>
 </body>
 </html>
