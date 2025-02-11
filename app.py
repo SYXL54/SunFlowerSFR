@@ -20,6 +20,14 @@ def register_page():
 def main_page():
     return render_template('mainPage.html')
 
+@app.route('/deposit',methods=["get"])
+def deposit_page():
+    return render_template('deposit.html')
+
+@app.route('/withdraw',methods=["get"])
+def withdraw_page():
+    return render_template('withdraw.html')
+
 @app.route('/check_user', methods=['GET'])
 def check_user():
     address = request.args.get('address')
