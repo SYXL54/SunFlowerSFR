@@ -25,10 +25,9 @@ def init_db():
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS transactions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER,
+        wallet_address TEXT NOT NULL,
         transaction_type TEXT,
         amount REAL,
-        fee REAL,
         transaction_hash TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id)
