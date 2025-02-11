@@ -1,0 +1,56 @@
+/* 全局样式 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+/* 主容器样式 */
+.container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 350px;
+}
+
+/* 按钮样式 */
+button {
+    padding: 12px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* 隐藏元素 */
+.hidden {
+    display: none;
+}
+
+/* 导航按钮布局 */
+.nav-buttons {
+    margin-top: 20px;
+}
+
+#walletInfo {
+    margin-top: 20px;
+    background-color: #e8f5e9;
+    padding: 15px;
+    border-radius: 8px;
+    word-break: break-word;
+}
