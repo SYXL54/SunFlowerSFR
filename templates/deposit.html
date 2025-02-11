@@ -1,25 +1,16 @@
-<!--存款页面（后续可扩展）-->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>存款</title>
-    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.5/dist/web3.min.js"></script>
-    <script src="{{ url_for('static', filename='deposit.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script src="/static/deposit.js"></script>
 </head>
 <body>
-    <h1>Web3 存款界面</h1>
-
-    <p>您的当前余额: <span id="balance">加载中...</span></p>
-
-    <h3>存款</h3>
-    <input type="number" id="depositAmount" placeholder="输入存款金额">
-    <button onclick="deposit()">存款</button>
-
-    <p id="status"></p>
-
-    <br>
-    <a href="/">返回首页</a>
+    <h1>存款</h1>
+    <input type="text" id="depositAmount" placeholder="输入存款金额（ETH）">
+    <button onclick="depositETH()">存款</button>
 </body>
 </html>
+
