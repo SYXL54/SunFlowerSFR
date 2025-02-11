@@ -1,26 +1,5 @@
-<!--# 起始界面-->
 <!DOCTYPE html>
 <html lang="zh-CN">
-<style>
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-    }
-    .modal-content {
-        background-color: white;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 300px;
-        text-align: center;
-    }
-</style>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,31 +12,97 @@
         <h1>欢迎来到 Web3 银行系统</h1>
         <p>管理您的加密资产，进行安全的存款与取款操作。</p>
 
+        <!-- 连接钱包按钮 -->
         <button id="connectWalletBtn">连接钱包</button>
 
+        <!-- 导航按钮 -->
         <div class="nav-buttons">
-            <button id="loginBtn" onclick="login()">Login</button>
-            <form action="{{ url_for('register_page') }}" method="post" style="display: inline;">
-                <button type="submit">Register</button>
-            </form>
+            <!-- 使用超链接跳转到注册页面 -->
+            <a href="{{ url_for('register_page') }}">
+                <button type="button">注册</button>
+            </a>
+
+            <!-- 登录按钮 -->
+            <button id="loginBtn" onclick="login()">登录</button>
         </div>        
 
+        <!-- 显示已连接的钱包地址 -->
         <div id="walletInfo" class="hidden">
             <p>已连接钱包地址：</p>
             <p id="walletAddress"></p>
         </div>
 
-        <!-- 弹框 -->
+        <!-- 弹窗提示 -->
         <div id="modal" class="modal">
             <div class="modal-content">
                 <p id="statusMessage"></p>
-                <button id="registerRedirect" style="display:none;">Go to Register</button>
-                <button onclick="closeModal()">Close</button>
+                <button id="registerRedirect" style="display:none;">前往注册</button>
+                <button onclick="closeModal()">关闭</button>
             </div>
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='app.js') }}">
+    <!-- 内嵌脚本：处理钱包连接与本地存储逻辑 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const connectWalletBtn = document.getElementById('connectWalletBtn');
+            const walletAddressDisplay = document.getElementById('walletAddress');
+            const walletInfoSection = document.getElementById('walletInfo');
+
+            // 检查本地存储是否已有钱包地址
+            const savedWalletAddress = localStorage.getItem('walletAddress');
+            if (savedWalletAddress) {
+                walletAddressDisplay.textContent = savedWalletAddress;
+                walletInfoSection.classList.remove('hidden');
+            }
+
+            // 连接钱包按钮点击事件
+            connectWalletBtn.addEventListener('click', async () => {
+                if (window.ethereum) {
+                    try {
+                        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                        const walletAddress = accounts[0];
+                        
+                        // 显示钱包地址
+                        walletAddressDisplay.textContent = walletAddress;
+                        walletInfoSection.classList.remove('hidden');
+
+                        // 将钱包地址保存到 localStorage，供注册页面使用
+                        localStorage.setItem('walletAddress', walletAddress);
+                        
+                        // 提示用户连接成功
+                        showModal("钱包连接成功！您可以继续注册或登录。");
+                    } catch (error) {
+                        console.error("连接钱包失败:", error);
+                        showModal("连接钱包失败，请重试。");
+                    }
+                } else {
+                    showModal("未检测到 MetaMask，请安装后刷新页面。");
+                }
+            });
+
+            // 显示弹窗函数
+            function showModal(message) {
+                const modal = document.getElementById('modal');
+                const statusMessage = document.getElementById('statusMessage');
+                modal.style.display = 'block';
+                statusMessage.textContent = message;
+            }
+
+            // 关闭弹窗函数
+            window.closeModal = function() {
+                document.getElementById('modal').style.display = 'none';
+            };
+
+            // 登录按钮示例逻辑（可自定义）
+            window.login = function() {
+                if (savedWalletAddress) {
+                    window.location.href = '/dashboard';  // 登录后跳转到 Dashboard
+                } else {
+                    showModal("请先连接钱包再进行登录。");
+                }
+            };
+        });
     </script>
 </body>
 </html>

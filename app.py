@@ -13,10 +13,6 @@ def get_db_connection():
 def initial_page():
     return render_template('index.html')
 
-@app.route('/register', methods=["GET", "POST"])
-def register_page():
-    return render_template('register.html')
-
 @app.route('/main', methods=["GET", "POST"])
 def main_page():
     return render_template('mainPage.html')
@@ -28,6 +24,63 @@ def deposit_page():
 @app.route('/withdraw', methods=["GET"])
 def withdraw_page():
     return render_template('withdraw.html')
+
+@app.route('/dashboard', methods=['GET'])
+def dashboard_page():
+    return render_template('dashboard.html')  # 确保 dashboard.html 文件存在于 templates 文件夹中
+
+
+# 注册页面路由
+@app.route('/register', methods=['GET', 'POST'])
+def register_page():
+    if request.method == 'GET':
+        return render_template('register.html')
+    
+    if request.method == 'POST':
+        # 支持 JSON 和表单数据
+        if request.is_json:
+            data = request.get_json()
+        else:
+            data = request.form
+
+        wallet_address = data.get('wallet_address')
+        passport = data.get('passport')
+        singpass_id = data.get('singpass_id')
+        address = data.get('address')
+
+        print(f"接收到的钱包地址: {wallet_address}")  # 打印钱包地址调试
+
+        if not wallet_address:
+            return jsonify({"success": False, "message": "钱包地址不能为空！"}), 400
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # 检查钱包地址是否已注册
+        cursor.execute("SELECT * FROM users WHERE LOWER(wallet_address) = LOWER(?)", (wallet_address,))
+        existing_user = cursor.fetchone()
+
+        # if existing_user:
+        #     conn.close()
+        #     return jsonify({"success": False, "message": "该钱包地址已注册，请直接登录。"}), 400
+        if existing_user:
+            conn.close()
+            return jsonify({"success": False, "message": "该钱包地址已注册，请直接登录。", "redirect": "/dashboard"}), 200
+
+
+        
+        # 插入用户信息
+        cursor.execute("""
+            INSERT INTO users (wallet_address, passport, singpass_id, address)
+            VALUES (?, ?, ?, ?)
+        """, (wallet_address, passport, singpass_id, address))
+
+        conn.commit()
+        conn.close()
+
+        return jsonify({"success": True, "message": "注册成功！"})
+
+
 
 @app.route('/check_user', methods=['GET'])
 def check_user():

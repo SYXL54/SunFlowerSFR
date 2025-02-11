@@ -1,32 +1,21 @@
-<!--主页（存款、取款、查询）-->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web3 银行系统 - 主页面</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.5/dist/web3.min.js"></script>
+    <title>Dashboard - Web3 银行系统</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Web3 银行系统</h1>
-        <p>欢迎，您的钱包地址：<span id="walletAddress"></span></p>
+        <h1>欢迎来到您的 Dashboard</h1>
+        <p>您已成功注册，现在可以管理您的加密资产！</p>
 
-        <div class="actions">
-            <button onclick="navigateTo('deposit.html')">存款</button>
-            <button onclick="navigateTo('withdraw.html')">取款</button>
-            <button onclick="navigateTo('transactions.html')">交易历史查询</button>
+        <div class="nav-buttons">
+            <a href="/deposit"><button>存款</button></a>
+            <a href="/withdraw"><button>取款</button></a>
+            <a href="/transactions"><button>交易记录</button></a>
         </div>
-
-        <div class="balance-section">
-            <h3>账户余额：</h3>
-            <p id="balance">加载中...</p>
-        </div>
-
-        <button id="logoutBtn" class="logout">退出登录</button>
     </div>
-
-    <script src="dashboard.js"></script>
 </body>
 </html>

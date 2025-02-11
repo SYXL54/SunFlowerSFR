@@ -1,1 +1,36 @@
 <!--注册界面-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户注册 - Web3 银行系统</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.5/dist/web3.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>用户注册</h1>
+
+        <form id="registerForm">
+            <label for="walletAddress">钱包地址：</label>
+            <input type="text" id="walletAddress" name="wallet_address" readonly placeholder="钱包地址将自动填充">
+        
+            <label for="passport">护照号码：</label>
+            <input type="text" id="passport" name="passport" required>
+        
+            <label for="singpass">Singpass ID：</label>
+            <input type="text" id="singpass" name="singpass_id" required>
+        
+            <label for="address">地址：</label>
+            <input type="text" id="address" name="address" required>
+        
+            <button type="submit">提交注册</button>
+        </form>
+        
+        <div id="message"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='register.js') }}"></script>
+</body>
+</html>
