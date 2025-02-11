@@ -9,8 +9,16 @@ def get_db_connection():
     return conn
 
 @app.route('/',methods=["get","post"])
-def login_page():
+def initial_page():
     return render_template('index.html')
+
+@app.route('/register',methods=["get","post"])
+def register_page():
+    return render_template('register.html')
+
+@app.route('/login',methods=["get","post"])
+def login_page():
+    return render_template('login.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
