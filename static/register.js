@@ -293,7 +293,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ];
 
     // 合约地址
-    const contractAddress = '0x0bF1a6240784a8857c9DdC0Bb88c493C929A4A02';
+    const contractAddress = '0x3E84490CE80D946915Ce61e6A882Ea5552ff67Ea';
 
     // 页面加载时自动填充钱包地址
     const savedWalletAddress = localStorage.getItem('walletAddress');
