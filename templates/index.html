@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web3 银行系统 - 起始页面</title>
+    <title>Web3 Banking System - Start page</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/web3@1.7.5/dist/web3.min.js"></script>
 </head>
 <body>
+    <!-- 右上角按钮 -->
+<button id="checkPageBtn" class="top-right-btn" onclick="location.href='/check'">查看 Check</button>
+
     <div class="container">
-        <h1>欢迎来到 Web3 银行系统</h1>
+        <h1>Welcome to the Web3 banking system</h1>
         <p>管理您的加密资产，进行安全的存款与取款操作。</p>
 
         <!-- 连接钱包按钮 -->

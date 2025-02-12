@@ -2,13 +2,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchForm = document.getElementById('searchForm');
     const transactionsTableBody = document.querySelector('#transactionsTable tbody');
 
-    // 提交查询表单
+    // Submit the search form
     searchForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 
         const walletAddress = document.getElementById('walletAddress').value.trim();
         if (!walletAddress) {
-            alert("请输入钱包地址！");
+            alert("Please enter a wallet address!");
             return;
         }
 
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const response = await fetch(`/get_transactions?wallet_address=${encodeURIComponent(walletAddress)}`);
             const data = await response.json();
 
-            // 清空表格
+            // Clear the table
             transactionsTableBody.innerHTML = '';
 
             if (data.success && data.transactions.length > 0) {
@@ -34,12 +34,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             } else {
                 const row = document.createElement('tr');
-                row.innerHTML = `<td colspan="4">没有找到相关交易记录。</td>`;
+                row.innerHTML = `<td colspan="4">No transactions found.</td>`;
                 transactionsTableBody.appendChild(row);
             }
         } catch (error) {
-            console.error("查询交易历史失败:", error);
-            alert("查询失败，请稍后再试。");
+            console.error("Failed to fetch transaction history:", error);
+            alert("Failed to fetch transactions. Please try again later.");
         }
     });
 });
+

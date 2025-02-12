@@ -96,6 +96,30 @@ button:hover {
     background: linear-gradient(135deg, #e63946, #ff6b6b);
 }
 
+/* ======= index 检查check ======= */
+#checkPageBtn {
+    position: fixed;  /* 让按钮固定在右上角 */
+    top: 10px;
+    right: 10px;
+    width: auto;  /* 让按钮宽度随内容调整 */
+    height: auto;
+    padding: 10px 15px; /* 让按钮不占太多空间 */
+    font-size: 15px; /* 让字体更小 */
+    background-color: #1e90ff;
+    color: white;
+    border: none;
+    border-radius: 5px; /* 让按钮稍微圆角 */
+    cursor: pointer;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* 轻微阴影增加立体感 */
+    transition: background-color 0.3s, transform 0.2s;
+    display: inline-block; /* 让按钮保持最小尺寸 */
+}
+
+#checkPageBtn:hover {
+    background-color: #0073e6;
+    transform: scale(1.05);
+}
+
 /* ======= 信息展示区域样式 ======= */
 #walletInfo, .balance-section {
     margin-top: 20px;

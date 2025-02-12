@@ -134,6 +134,11 @@ def get_transactions():
 
     return jsonify({"success": True, "transactions": transactions_list})
 
+# 校验页
+@app.route('/check', methods=['GET'])
+def check_page():
+    return render_template('check.html') 
+
 
 # 测试代码：插入测试钱包地址
 def insert_test_address():

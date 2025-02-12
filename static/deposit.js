@@ -618,10 +618,10 @@ async function depositETH() {
         const signer = provider.getSigner();
         const bankContract = new ethers.Contract(bankContractAddress, bankAbi, signer);
 
-        // 获取用户输入的存款金额
+        // Get the deposit amount entered by the user
         let depositAmount = document.getElementById("depositAmount").value;
         if (!depositAmount || depositAmount <= 0) {
-            alert("请输入有效的存款金额");
+            alert("Please enter a valid deposit amount.");
             return;
         }
 
@@ -634,11 +634,11 @@ async function depositETH() {
             // **存款成功后更新余额**
             getBalances();
         } catch (error) {
-            console.error("存款失败:", error);
-            alert("存款失败，请检查 MetaMask 连接或余额！");
+            console.error("Deposit failed:", error);
+            alert("Deposit failed. Please check your MetaMask connection or balance!");
         }
     } else {
-        alert("请安装 MetaMask 以使用 Web3 功能");
+        alert("Please install MetaMask to use Web3 features.");
     }
 }
 

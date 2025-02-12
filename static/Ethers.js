@@ -1,3 +1,4 @@
+//暂时废弃！！！
 //实现认证账户对认证事件的监听
 const { useEffect, useState } = require('react');
 const { ethers } = require('ethers');

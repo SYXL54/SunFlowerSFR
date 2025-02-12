@@ -621,16 +621,16 @@ async function withdrawETH() {
 
         let withdrawAmount = document.getElementById("withdrawAmount").value;
         if (!withdrawAmount || withdrawAmount <= 0) {
-            alert("请输入有效的取款金额");
+            alert("Please enter a valid withdrawal amount.");
             return;
         }
 
         try {
-            // 1. 先授权 Bank.sol 从用户钱包转走 SFR 代币
+            // 1. First, authorize Bank.sol to transfer SFR tokens from the user's wallet
             let approveTx = await sfrContract.approve(bankContractAddress, ethers.utils.parseEther(withdrawAmount));
             await approveTx.wait();
 
-            // 2. 调用 Bank.sol 的 withdraw 方法
+            // 2. Call the withdraw method from Bank.sol
             let tx = await bankContract.withdraw(ethers.utils.parseEther(withdrawAmount));
             await tx.wait();
             alert(`成功取款 ${withdrawAmount} ETH，已销毁等量 SFR！`);
@@ -638,8 +638,8 @@ async function withdrawETH() {
             // **取款成功后更新余额**
             getBalances();
         } catch (error) {
-            console.error("取款失败:", error);
-            alert("取款失败，请检查 SFR 余额或 MetaMask 连接！");
+            console.error("Withdrawal failed:", error);
+            alert("Withdrawal failed. Please check your SFR balance or MetaMask connection!");
         }
     } else {
         alert("请安装 MetaMask 以使用 Web3 功能");

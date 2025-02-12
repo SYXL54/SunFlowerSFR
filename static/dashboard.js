@@ -1,4 +1,4 @@
-// 检查钱包是否已连接
+// Check if the wallet is connected
 window.onload = async () => {
     if (window.ethereum) {
         try {
@@ -6,18 +6,18 @@ window.onload = async () => {
             const walletAddress = accounts[0];
             document.getElementById('walletAddress').innerText = walletAddress;
 
-            // 加载账户余额
+            // Load account balance
             getAccountBalance(walletAddress);
         } catch (error) {
-            console.error("无法获取钱包地址:", error);
-            alert("请连接钱包后重试。");
+            console.error("Unable to retrieve wallet address:", error);
+            alert("Please connect your wallet and try again.");
         }
     } else {
-        alert("未检测到 MetaMask，请安装后刷新页面。");
+        alert("MetaMask not detected. Please install it and refresh the page.");
     }
 };
 
-// 获取账户余额
+// Get account balance
 async function getAccountBalance(walletAddress) {
     const web3 = new Web3(window.ethereum);
     const balanceWei = await web3.eth.getBalance(walletAddress);
@@ -26,12 +26,12 @@ async function getAccountBalance(walletAddress) {
     document.getElementById('balance').innerText = `${balanceEth} ETH`;
 }
 
-// 页面跳转函数
+// Navigation function
 function navigateTo(page) {
     window.location.href = page;
 }
 
-// 退出登录
+// Logout
 document.getElementById('logoutBtn').addEventListener('click', () => {
     window.location.href = 'index.html';
 });
