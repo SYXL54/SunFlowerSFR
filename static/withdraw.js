@@ -633,7 +633,7 @@ async function withdrawETH() {
             // 2. Call the withdraw method from Bank.sol
             let tx = await bankContract.withdraw(ethers.utils.parseEther(withdrawAmount));
             await tx.wait();
-            alert(`成功取款 ${withdrawAmount} ETH，已销毁等量 SFR！`);
+            alert(`You have withdrawn ${withdrawAmount} your ETH successfully.\nAn equal amount of your SFR tokens have been destroyed!`);
 
             // **取款成功后更新余额**
             getBalances();

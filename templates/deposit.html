@@ -124,9 +124,37 @@
         <div id="statusMessage" class="hidden"></div> <!-- 存款状态信息 -->
         <!-- 余额显示 -->
         <div id="balances">
-            <p>您目前的 SFR 余额: <span id="sfrBalance">加载中...</span></p>
-            <p>您目前的 Sepolia ETH 余额: <span id="ethBalance">加载中...</span></p>
+            <p class="balance-text">Your current SFR balance:</p>
+            <span id="sfrBalance" class="balance-value">loading...</span>
+
+            <p class="balance-text">Your current Sepolia ETH balance:</p>
+            <span id="ethBalance" class="balance-value">loading...</span>
         </div>
+        
+        <!-- 添加 CSS 样式 -->
+        <style>
+            /* 让整个余额信息居中 */
+            #balances {
+                text-align: center;
+                margin-top: 20px; /* 添加一些上边距 */
+            }
+
+            /* 让文本居中 */
+            .balance-text {
+                font-size: 18px;
+                font-weight: bold;
+                margin-bottom: 5px; /* 文字与数字之间的间距 */
+            }
+
+            /* 让余额数值居中并单独占一行 */
+            .balance-value {
+                font-size: 24px;
+                font-weight: bold;
+                color: #ffcc00;
+                display: block; /* 让余额数值独占一行 */
+                margin-bottom: 20px; /* 余额与下一个信息之间的间距 */
+            }
+        </style>
     </div>
 </body>
 </html>

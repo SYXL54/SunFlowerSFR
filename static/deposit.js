@@ -629,7 +629,7 @@ async function depositETH() {
             const tx = await bankContract.deposit({ value: ethers.utils.parseEther(depositAmount) });
             await tx.wait();
 
-            alert(`成功存入 ${depositAmount} ETH，已获得等量 SFR 代币！`);
+            alert(`deposit ${depositAmount} ETH successfully.\nyou have received an equal amount of SFR tokens!`);
 
             // **存款成功后更新余额**
             getBalances();
