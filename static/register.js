@@ -359,6 +359,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         messageDiv.textContent = "注册成功！交易哈希：" + tx.hash;
                         messageDiv.style.color = "green";
                         clearInterval(pollIntervalId);
+                        setTimeout(() => window.location.href = '/dashboard', 1500);
                         //todo:写入数据库？
                     }
                 } catch (pollError) {
