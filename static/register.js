@@ -295,26 +295,141 @@ document.addEventListener('DOMContentLoaded', async function () {
     // 合约地址
     const contractAddress = '0x3E84490CE80D946915Ce61e6A882Ea5552ff67Ea';
 
-    // bank
-    const bankContractAddress = "0x41B373BE3C13fBe0Fc599082c35fF4A93bDA022B"; // Bank.sol合约地址
-    const bankAbi = [
+    // sfr
+    const sfrTokenAddress = "0xD75693BA2A137C097F69A588ee4C02Eae778698a"; // SFRToken合约地址
+    const sfrAbi = [
         {
-            "inputs": [],
-            "name": "deposit",
-            "outputs": [],
-            "stateMutability": "payable",
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "spender",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "value",
+                    "type": "uint256"
+                }
+            ],
+            "name": "approve",
+            "outputs": [
+                {
+                    "internalType": "bool",
+                    "name": "",
+                    "type": "bool"
+                }
+            ],
+            "stateMutability": "nonpayable",
             "type": "function"
         },
         {
             "inputs": [
                 {
                     "internalType": "address",
-                    "name": "_sfrToken",
+                    "name": "from",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                }
+            ],
+            "name": "burn",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "spender",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "allowance",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "needed",
+                    "type": "uint256"
+                }
+            ],
+            "name": "ERC20InsufficientAllowance",
+            "type": "error"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "sender",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "balance",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "needed",
+                    "type": "uint256"
+                }
+            ],
+            "name": "ERC20InsufficientBalance",
+            "type": "error"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "approver",
                     "type": "address"
                 }
             ],
-            "stateMutability": "nonpayable",
-            "type": "constructor"
+            "name": "ERC20InvalidApprover",
+            "type": "error"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "receiver",
+                    "type": "address"
+                }
+            ],
+            "name": "ERC20InvalidReceiver",
+            "type": "error"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "sender",
+                    "type": "address"
+                }
+            ],
+            "name": "ERC20InvalidSender",
+            "type": "error"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "spender",
+                    "type": "address"
+                }
+            ],
+            "name": "ERC20InvalidSpender",
+            "type": "error"
         },
         {
             "inputs": [
@@ -344,24 +459,42 @@ document.addEventListener('DOMContentLoaded', async function () {
                 {
                     "indexed": true,
                     "internalType": "address",
-                    "name": "user",
+                    "name": "owner",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "spender",
                     "type": "address"
                 },
                 {
                     "indexed": false,
                     "internalType": "uint256",
-                    "name": "amount",
+                    "name": "value",
                     "type": "uint256"
-                },
-                {
-                    "indexed": false,
-                    "internalType": "string",
-                    "name": "message",
-                    "type": "string"
                 }
             ],
-            "name": "Deposit",
+            "name": "Approval",
             "type": "event"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "to",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                }
+            ],
+            "name": "mint",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
         },
         {
             "anonymous": false,
@@ -390,25 +523,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             "type": "function"
         },
         {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": true,
-                    "internalType": "address",
-                    "name": "user",
-                    "type": "address"
-                },
-                {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "amount",
-                    "type": "uint256"
-                }
-            ],
-            "name": "RewardIssued",
-            "type": "event"
-        },
-        {
             "inputs": [
                 {
                     "internalType": "address",
@@ -418,6 +532,84 @@ document.addEventListener('DOMContentLoaded', async function () {
             ],
             "name": "rewardUser",
             "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "to",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "value",
+                    "type": "uint256"
+                }
+            ],
+            "name": "transfer",
+            "outputs": [
+                {
+                    "internalType": "bool",
+                    "name": "",
+                    "type": "bool"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "from",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "to",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "value",
+                    "type": "uint256"
+                }
+            ],
+            "name": "Transfer",
+            "type": "event"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "from",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "to",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "value",
+                    "type": "uint256"
+                }
+            ],
+            "name": "transferFrom",
+            "outputs": [
+                {
+                    "internalType": "bool",
+                    "name": "",
+                    "type": "bool"
+                }
+            ],
             "stateMutability": "nonpayable",
             "type": "function"
         },
@@ -437,28 +629,67 @@ document.addEventListener('DOMContentLoaded', async function () {
         {
             "inputs": [
                 {
-                    "internalType": "uint256",
-                    "name": "amount",
-                    "type": "uint256"
+                    "internalType": "address",
+                    "name": "owner",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "spender",
+                    "type": "address"
                 }
             ],
-            "name": "withdraw",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "stateMutability": "payable",
-            "type": "receive"
-        },
-        {
-            "inputs": [],
-            "name": "getBankBalance",
+            "name": "allowance",
             "outputs": [
                 {
                     "internalType": "uint256",
                     "name": "",
                     "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "account",
+                    "type": "address"
+                }
+            ],
+            "name": "balanceOf",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "decimals",
+            "outputs": [
+                {
+                    "internalType": "uint8",
+                    "name": "",
+                    "type": "uint8"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "name",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
                 }
             ],
             "stateMutability": "view",
@@ -479,12 +710,25 @@ document.addEventListener('DOMContentLoaded', async function () {
         },
         {
             "inputs": [],
-            "name": "sfrToken",
+            "name": "symbol",
             "outputs": [
                 {
-                    "internalType": "contract SFRToken",
+                    "internalType": "string",
                     "name": "",
-                    "type": "address"
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "totalSupply",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
                 }
             ],
             "stateMutability": "view",
@@ -563,15 +807,15 @@ document.addEventListener('DOMContentLoaded', async function () {
             messageDiv.textContent = "正在提交注册，请稍候...";
             messageDiv.style.color = "blue";
 
-            const tx = await contract.register(passport, singPass, addressInfo);
-            console.log("注册已提交，等待确认:", tx);
-            await tx.wait();
-            console.log("交易已确认，交易哈希:", tx.hash);
+            // const tx = await contract.register(passport, singPass, addressInfo);
+            // console.log("注册已提交，等待确认:", tx);
+            // await tx.wait();
+            // console.log("交易已确认，交易哈希:", tx.hash);
 
             // 开始每 5s 轮询 checkRegistrationStatus 方法
             const userAccount = data.wallet_address;  // 当前用户钱包地址
             const pollInterval = 5000;  // 30 秒
-            let register_status = false;
+            let register_status = true
             const pollRegistrationStatus = async () => {
                 try {
                     const status = await contract.checkRegistrationStatus(userAccount);
@@ -620,11 +864,15 @@ document.addEventListener('DOMContentLoaded', async function () {
                             await window.ethereum.request({ method: "eth_requestAccounts" });
                             const provider = new ethers.providers.Web3Provider(window.ethereum);
                             const signer = provider.getSigner();
-                            const bankContract = new ethers.Contract(bankContractAddress, bankAbi, signer);
+                            const sfrContract = new ethers.Contract(sfrTokenAddress, sfrAbi, signer);
 
                             // **定义新用户的奖励数量**
-                            const rewardAmount = "0.0005"; // 赠送
-                            const tx = await bankContract.rewardUser(savedWalletAddress);
+                            const rewardAmount = 0.0005;  // 50 SFR
+
+                            // **调用 `mint()` 方法，直接给用户铸造 SFR 代币**
+                            // const tx = await sfrContract.mint(savedWalletAddress, rewardAmount);
+                            const tx = await sfrContract.rewardUser(savedWalletAddress);
+                            console.log("???");
                             await tx.wait();
                 
                             console.log(`Minted ${rewardAmount} SFR to ${savedWalletAddress}`);

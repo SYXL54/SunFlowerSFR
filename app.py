@@ -241,6 +241,7 @@ def record_transaction():
             INSERT INTO transactions (wallet_address, transaction_type, amount)
             VALUES (?, ?, ?)
         """, (wallet_address, transaction_type, amount))
+        print("transactions")
 
         conn.commit()
         conn.close()
