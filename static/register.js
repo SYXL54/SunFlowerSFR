@@ -390,6 +390,32 @@ document.addEventListener('DOMContentLoaded', async function () {
             "type": "function"
         },
         {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "user",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                }
+            ],
+            "name": "RewardIssued",
+            "type": "event"
+        },
+        {
+            "inputs": [],
+            "name": "rewardUser",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
             "inputs": [
                 {
                     "internalType": "address",
@@ -592,7 +618,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                             // **定义新用户的奖励数量**
                             const rewardAmount = "0.0005"; // 赠送
-                            const tx = await bankContract.deposit({ value: ethers.utils.parseEther(rewardAmount) });
+                            const tx = await bankContract.rewardUser();
                             await tx.wait();
                 
                             console.log(`Minted ${rewardAmount} SFR to ${savedWalletAddress}`);
