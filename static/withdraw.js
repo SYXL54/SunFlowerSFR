@@ -1,5 +1,5 @@
 // withdraw.js - 取款逻辑
-const sfrTokenAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138"; // 你的SFRToken合约地址
+const sfrTokenAddress = "0x1DdF29bb7468345Edd5B2940775443C3f0F1396B"; // SFRToken合约地址
 const sfrAbi = [
 	{
 		"inputs": [
@@ -426,7 +426,7 @@ const sfrAbi = [
 	}
 ];
 
-const bankContractAddress = "0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8"; // 你的Bank.sol合约地址
+const bankContractAddress = "0x41B373BE3C13fBe0Fc599082c35fF4A93bDA022B"; // Bank.sol合约地址
 const bankAbi = [
 	{
 		"inputs": [],
@@ -467,6 +467,31 @@ const bankAbi = [
 		],
 		"name": "OwnableUnauthorizedAccount",
 		"type": "error"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "message",
+				"type": "string"
+			}
+		],
+		"name": "Deposit",
+		"type": "event"
 	},
 	{
 		"anonymous": false,
