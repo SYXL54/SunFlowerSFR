@@ -526,6 +526,19 @@ document.addEventListener('DOMContentLoaded', async function () {
             "inputs": [
                 {
                     "internalType": "address",
+                    "name": "user",
+                    "type": "address"
+                }
+            ],
+            "name": "rewardUser",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
                     "name": "to",
                     "type": "address"
                 },
@@ -857,7 +870,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                             const rewardAmount = 0.0005;  // 50 SFR
 
                             // **调用 `mint()` 方法，直接给用户铸造 SFR 代币**
-                            // const tx = await sfrContract.mint(savedWalletAddress, rewardAmount);
+                            // const tx = await await bankContract.rewardUser(savedWalletAddress);
                             const tx = await sfrContract.rewardUser(savedWalletAddress);
                             console.log("???");
                             await tx.wait();
