@@ -1,259 +1,169 @@
-/*index.html*/
-/* 全局样式 */
+/* ======= 全局通用样式 ======= */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2); /* 蓝紫渐变背景 */
     margin: 0;
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
+    color: #ffffff;
 }
 
-/* 主容器样式 */
+/* ======= 通用容器样式 ======= */
 .container {
-    background-color: white;
+    background: rgba(255, 255, 255, 0.1); /* 半透明背景 */
+    backdrop-filter: blur(15px);          /* 背景模糊效果 */
     padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); /* 深色阴影增加立体感 */
     text-align: center;
-    width: 350px;
+    width: 90%;
+    max-width: 400px;
+    color: #ffffff;
+    transition: transform 0.3s ease;  /* 轻微的悬浮动画 */
 }
 
-/* 按钮样式 */
-button {
-    padding: 12px 20px;
-    margin: 10px;
-    border: none;
-    border-radius: 8px;
-    background-color: #4CAF50;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.container:hover {
+    transform: scale(1.02);  /* 悬浮时轻微放大 */
 }
 
-button:hover {
-    background-color: #45a049;
-}
-
-/* 隐藏元素 */
-.hidden {
-    display: none;
-}
-
-/* 导航按钮布局 */
-.nav-buttons {
-    margin-top: 20px;
-}
-
-#walletInfo {
-    margin-top: 20px;
-    background-color: #e8f5e9;
-    padding: 15px;
-    border-radius: 8px;
-    word-break: break-word;
-}
-
-/*dashboard.html*/
-/* 全局样式 */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-}
-
-/* 主容器样式 */
-.container {
-    background-color: white;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    width: 400px;
-}
-
-/* 按钮样式 */
-button {
-    padding: 12px 20px;
-    margin: 10px;
-    border: none;
-    border-radius: 8px;
-    background-color: #4CAF50;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-
-/* 特殊按钮样式 */
-.logout {
-    background-color: #d9534f;
-}
-
-.logout:hover {
-    background-color: #c9302c;
-}
-
-/* 动作按钮的布局 */
-.actions {
-    margin: 20px 0;
-}
-
-/* 余额显示区域 */
-.balance-section {
-    background-color: #e8f5e9;
-    padding: 15px;
-    border-radius: 8px;
-    margin-top: 20px;
-    word-break: break-word;
-}
-
-/*register.html*/
-/* 通用样式 */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-}
-
-.container {
-    background-color: white;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 400px;
-    text-align: center;
-}
-
-h1 {
+/* ======= 标题样式 ======= */
+h1, h2 {
     margin-bottom: 20px;
+    font-size: 2em;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
 }
 
-/* 表单输入样式 */
+/* ======= 表单和输入框样式 ======= */
 form label {
     display: block;
-    margin: 10px 0 5px;
+    margin: 15px 0 5px;
     text-align: left;
-}
-
-form input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-}
-
-/* 按钮样式 */
-button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 8px;
-    background-color: #4CAF50;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-
-#message {
-    margin-top: 20px;
-    color: red;
     font-weight: bold;
 }
 
-/*transaction.html*/
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    color: #333;
-    margin: 0;
-    padding: 20px;
-}
-
-.container {
-    max-width: 800px;
-    margin: auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h1, h2 {
-    text-align: center;
-    color: #2c3e50;
-}
-
-form {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
 form input {
-    padding: 10px;
-    width: 300px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-right: 10px;
-}
-
-form button {
-    padding: 10px 20px;
-    background-color: #3498db;
-    color: white;
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.2);  /* 半透明输入框 */
+    color: #ffffff;
+    font-size: 16px;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+form input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+form input:focus {
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 8px #a29bfe;  /* 聚焦时发光效果 */
+    outline: none;
+}
+
+/* ======= 按钮样式 ======= */
+button {
+    width: 100%;
+    padding: 14px 20px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 50px;  /* 圆角按钮 */
+    background: linear-gradient(135deg, #00c6ff, #0072ff);  /* 蓝色渐变按钮 */
+    color: #ffffff;
+    font-size: 18px;
     cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    letter-spacing: 1px;
 }
 
-form button:hover {
-    background-color: #2980b9;
+button:hover {
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);  /* 悬浮时粉红渐变 */
+    box-shadow: 0 5px 15px rgba(255, 117, 140, 0.6);
+    transform: translateY(-3px);  /* 悬浮时按钮上浮 */
 }
 
+.logout {
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);  /* 退出按钮红色渐变 */
+}
+
+.logout:hover {
+    background: linear-gradient(135deg, #e63946, #ff6b6b);
+}
+
+/* ======= 信息展示区域样式 ======= */
+#walletInfo, .balance-section {
+    margin-top: 20px;
+    background: rgba(0, 0, 0, 0.2); /* 深色透明背景 */
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 16px;
+    word-break: break-word;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ======= 表格样式 (交易历史页面) ======= */
 #transactionsTable {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    background: rgba(255, 255, 255, 0.1);  /* 半透明背景 */
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 #transactionsTable th, #transactionsTable td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: center;
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);  /* 分隔线 */
+    color: #ffffff;
 }
 
 #transactionsTable th {
-    background-color: #3498db;
-    color: white;
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    color: #ffffff;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
 #transactionsTable tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 #transactionsTable tr:hover {
-    background-color: #ddd;
+    background: rgba(0, 0, 0, 0.2);  /* 悬浮时变暗 */
+}
+
+#message {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #FFD700; /* 亮黄色 */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);  /* 黑色阴影增加立体感 */
+    background-color: rgba(0, 0, 0, 0.3); /* 半透明背景框增加对比 */
+    padding: 10px 20px;
+    border-radius: 8px;
+    display: inline-block; /* 自适应文本宽度 */
+}
+
+
+
+/* ======= 响应式设计 ======= */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    button {
+        font-size: 16px;
+    }
+
+    #transactionsTable th, #transactionsTable td {
+        padding: 10px;
+    }
 }
