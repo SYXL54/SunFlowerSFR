@@ -15,11 +15,12 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const response = await fetch(`/get_transactions?wallet_address=${encodeURIComponent(walletAddress)}`);
             const data = await response.json();
-
+            
             // Clear the table
             transactionsTableBody.innerHTML = '';
 
             if (data.success && data.transactions.length > 0) {
+
                 data.transactions.forEach(transaction => {
                     const row = document.createElement('tr');
 
@@ -33,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     transactionsTableBody.appendChild(row);
                 });
             } else {
+                console.log("hello")
                 const row = document.createElement('tr');
                 row.innerHTML = `<td colspan="4">No transactions found.</td>`;
                 transactionsTableBody.appendChild(row);
