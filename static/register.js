@@ -635,6 +635,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                             });
                 
                             console.log("Transaction recorded successfully.");
+                            setTimeout(() => window.location.href = "/dashboard", 2000);
                         } catch (error) {
                             console.error("Minting failed:", error);
                             alert("Failed to mint SFR tokens.");
@@ -642,7 +643,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                     } else {
                         alert("Please install MetaMask to use Web3 features.");
                     }
-                    setTimeout(() => window.location.href = "/dashboard", 2000);
                 } else {
                     messageDiv.textContent = "数据库写入失败：" + result.error;
                     messageDiv.style.color = "red";
