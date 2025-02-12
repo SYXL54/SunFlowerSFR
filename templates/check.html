@@ -1,15 +1,108 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>以太坊钱包认证</title>
+    <title>Ethereum wallet authentication</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/web3@1.7.5/dist/web3.min.js"></script>
+
+
+    <!-- 内嵌的CSS样式，保持与主界面一致 -->
+    <style>
+		/* ======= Global Styles ======= */
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			background: linear-gradient(135deg, #667eea, #764ba2); /* Blue-purple gradient background */
+			margin: 0;
+			padding: 0;
+			display: flex;
+			flex-direction: column;  /* Stack elements vertically */
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+			color: #ffffff;
+		}
+		
+		/* ======= Container Styles ======= */
+		.container {
+			display: flex;
+			flex-direction: column;  /* Vertically align the content */
+			align-items: center;
+			justify-content: center;
+			background: rgba(255, 255, 255, 0.1); /* Semi-transparent card background */
+			backdrop-filter: blur(15px);  /* Blur effect for glassmorphism */
+			padding: 40px;
+			border-radius: 16px;
+			box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);  /* Deep shadow for 3D effect */
+			width: 90%;
+			max-width: 400px;
+			transition: transform 0.3s ease;  /* Subtle hover animation */
+		}
+		
+		.container:hover {
+			transform: scale(1.02);  /* Slight zoom on hover */
+		}
+		
+		/* ======= Title Styles ======= */
+		h1 {
+			font-size: 2em;
+			margin-bottom: 20px;
+			color: #ffffff;
+			text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+			text-align: center;  /* Center the title */
+		}
+		
+		/* ======= Button Styles ======= */
+		button {
+			width: 60%;  /* Reduce width to 60% of the container */
+			padding: 10px;  /* Reduce padding for a smaller button */
+			border: none;
+			border-radius: 30px;  /* Slightly smaller rounded corners */
+			background: linear-gradient(135deg, #ff758c, #ff7eb3);  /* Keep the same gradient */
+			color: #ffffff;
+			font-size: 16px;  /* Reduce font size slightly */
+			cursor: pointer;
+			transition: all 0.3s ease-in-out;
+			letter-spacing: 0.5px;
+			margin-top: 10px;  /* Maintain spacing between elements */
+		}
+		
+		button:hover {
+			background: linear-gradient(135deg, #00c6ff, #0072ff);  /* Hover effect remains the same */
+			box-shadow: 0 4px 15px rgba(0, 198, 255, 0.5);
+			transform: translateY(-2px);  /* Subtle hover lift */
+		}
+		
+		
+		/* ======= Status Display Styles ======= */
+		#status {
+			margin-top: 20px;
+			font-size: 18px;
+			font-weight: bold;
+			color: #FFD700;  /* Bright yellow for status text */
+			text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);  /* Add depth to the text */
+			background-color: rgba(0, 0, 0, 0.3);  /* Semi-transparent background */
+			padding: 10px 20px;
+			border-radius: 8px;
+			display: inline-block;
+			text-align: center;
+		}
+		
+		/* ======= Status Colors for Connection ======= */
+		#status.connected {
+			background-color: rgba(76, 175, 80, 0.8);  /* Green background for connected status */
+		}
+		
+		#status.error {
+			background-color: rgba(244, 67, 54, 0.8);  /* Red background for error status */
+		}
+	</style>
+
 </head>
 <body>
-    <h1>以太坊钱包认证</h1>
-    <button id="connectWalletBtn">连接钱包</button>
-    <p id="status">状态：未连接</p>
+    <h1>🔑 Ethereum wallet authentication</h1>
+    <button id="connectWalletBtn">Connected wallet</button>
+    <p id="status">Status: Disconnected</p>
 
     <script>
         const fixedAddresses = [
@@ -311,53 +404,53 @@
         const connectButton = document.getElementById('connectWalletBtn');
         const statusText = document.getElementById('status');
 
-        connectButton.addEventListener('click', async () => {
-            if (window.ethereum) {
-                try {
-                    // 请求用户授权连接钱包
-                    
+		connectButton.addEventListener('click', async () => {
+			if (window.ethereum) {
+				try {
+					// Request user authorization to connect the wallet
 					const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                        const walletAddress = accounts[0];
-
-                    // 创建以太坊提供者
-                    const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-                    // 获取签名者
-                    const signer = provider.getSigner();
-
-                    // 获取钱包地址
-                    statusText.innerText = `状态：已连接，钱包地址：${walletAddress}`;
-
-                    // 检查钱包地址是否在固定地址列表中
-                    if (fixedAddresses.map(addr => addr.toLowerCase()).includes(walletAddress.toLowerCase())) {
-                        // 创建合约实例
-                        const contract = new ethers.Contract(contractAddress, contractABI, signer);
-
-                        // 监听 VerificationRequested 事件
-                        contract.on('VerificationRequested', async (userAddress, dataType) => {
-                            console.log(`收到验证请求，用户地址：${userAddress}，数据类型：${dataType}`);
-
-                            // 调用合约的 confirmVerification 方法
-                            try {
-                                const tx = await contract.confirmVerification(userAddress, dataType);
-                                await tx.wait();
-                                console.log('验证已确认');
-                            } catch (error) {
-                                console.error('确认验证时出错:', error);
-                            }
-                        });
-
-                        console.log('事件监听已启动');
-                    } else {
-                        console.log('钱包地址未授权，无法启动事件监听');
-                    }
-                } catch (error) {
-                    console.error('连接钱包时出错:', error);
-                }
-            } else {
-                alert('请安装 MetaMask 或其他以太坊钱包插件。');
-            }
-        });
+					const walletAddress = accounts[0];
+		
+					// Create an Ethereum provider
+					const provider = new ethers.providers.Web3Provider(window.ethereum);
+		
+					// Get the signer
+					const signer = provider.getSigner();
+		
+					// Display the connected wallet address
+					statusText.innerText = `Status: Connected, Wallet Address: ${walletAddress}`;
+		
+					// Check if the wallet address is in the authorized list
+					if (fixedAddresses.map(addr => addr.toLowerCase()).includes(walletAddress.toLowerCase())) {
+						// Create the contract instance
+						const contract = new ethers.Contract(contractAddress, contractABI, signer);
+		
+						// Listen for the VerificationRequested event
+						contract.on('VerificationRequested', async (userAddress, dataType) => {
+							console.log(`Verification request received, User Address: ${userAddress}, Data Type: ${dataType}`);
+		
+							// Call the confirmVerification method on the contract
+							try {
+								const tx = await contract.confirmVerification(userAddress, dataType);
+								await tx.wait();
+								console.log('Verification confirmed');
+							} catch (error) {
+								console.error('Error confirming verification:', error);
+							}
+						});
+		
+						console.log('Event listener started');
+					} else {
+						console.log('Wallet address is not authorized, event listener will not start');
+					}
+				} catch (error) {
+					console.error('Error connecting to the wallet:', error);
+				}
+			} else {
+				alert('Please install MetaMask or another Ethereum wallet extension.');
+			}
+		});
+		
     </script>
 </body>
 </html>
