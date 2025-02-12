@@ -4,10 +4,16 @@ import os
 
 app = Flask(__name__)
 
-def get_db_connection():
+def get_users_db_connection():
     conn = sqlite3.connect('users.db')
     conn.row_factory = sqlite3.Row
     return conn
+
+def get_transaction_db_connection():
+    conn = sqlite3.connect('transaction.db')  
+    conn.row_factory = sqlite3.Row
+    return conn
+
 
 @app.route('/', methods=["GET", "POST"])
 def initial_page():
@@ -29,6 +35,10 @@ def withdraw_page():
 def dashboard_page():
     return render_template('dashboard.html')  # 确保 dashboard.html 文件存在于 templates 文件夹中
 
+# 交易历史查询页面
+@app.route('/transactions')
+def transactions_page():
+    return render_template('transactions.html')
 
 # 注册页面路由
 @app.route('/register', methods=['GET', 'POST'])
@@ -53,7 +63,7 @@ def register_page():
         if not wallet_address:
             return jsonify({"success": False, "message": "钱包地址不能为空！"}), 400
 
-        conn = get_db_connection()
+        conn = get_users_db_connection()
         cursor = conn.cursor()
 
         # 检查钱包地址是否已注册
@@ -90,7 +100,7 @@ def check_user():
 
     print(f"接收到的钱包地址: '{address}'")
 
-    conn = get_db_connection()
+    conn = get_users_db_connection()
     cursor = conn.cursor()
 
     # 使用统一的字段名 wallet_address
@@ -107,9 +117,27 @@ def check_user():
     else:
         return jsonify({"registered": False})
 
+
+# 获取交易历史数据
+@app.route('/get_transactions', methods=['GET'])
+def get_transactions():
+    wallet_address = request.args.get('wallet_address')
+
+    if not wallet_address:
+        return jsonify({"success": False, "message": "缺少钱包地址参数"}), 400
+
+    conn = get_transaction_db_connection()
+    transactions = conn.execute('SELECT * FROM transactions WHERE wallet_address = ?', (wallet_address,)).fetchall()
+    conn.close()
+
+    transactions_list = [dict(tx) for tx in transactions]
+
+    return jsonify({"success": True, "transactions": transactions_list})
+
+
 # 测试代码：插入测试钱包地址
 def insert_test_address():
-    conn = get_db_connection()
+    conn = get_users_db_connection()
     cursor = conn.cursor()
 
     test_address = '0x3424b0dd4567b4eaccbaf792701ea73aaa56f1e8'
@@ -128,7 +156,7 @@ def insert_test_address():
 
 # 打印数据库中的所有钱包地址
 def print_all_addresses():
-    conn = get_db_connection()
+    conn = get_users_db_connection()
     cursor = conn.cursor()
 
     cursor.execute("SELECT wallet_address FROM users")

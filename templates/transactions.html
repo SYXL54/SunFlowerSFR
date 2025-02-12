@@ -1,1 +1,41 @@
-<!--交易历史查询（后续可扩展）>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交易历史查询</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>交易历史查询</h1>
+
+        <!-- 输入钱包地址查询交易历史 -->
+        <form id="searchForm">
+            <label for="walletAddress">输入钱包地址：</label>
+            <input type="text" id="walletAddress" name="wallet_address" placeholder="请输入钱包地址">
+            <button type="submit">查询交易历史</button>
+        </form>
+
+        <!-- 显示查询结果 -->
+        <div id="transactionsContainer">
+            <h2>交易记录</h2>
+            <table id="transactionsTable">
+                <thead>
+                    <tr>
+                        <th>交易类型</th>
+                        <th>金额</th>
+                        <th>交易哈希</th>
+                        <th>创建时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 交易记录将在这里动态插入 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='transactions.js') }}"></script>
+</body>
+</html>
