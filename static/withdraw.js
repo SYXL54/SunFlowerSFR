@@ -590,6 +590,27 @@ const bankAbi = [
 	}
 ];
 
+async function getBalances() {
+    if (typeof window.ethereum !== "undefined") {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const address = await signer.getAddress();
+        const sfrContract = new ethers.Contract(sfrTokenAddress, sfrAbi, provider);
+
+        // 获取 SFR 余额
+        let sfrBalance = await sfrContract.balanceOf(address);
+        sfrBalance = ethers.utils.formatEther(sfrBalance);
+
+        // 获取 ETH 余额
+        let ethBalance = await provider.getBalance(address);
+        ethBalance = ethers.utils.formatEther(ethBalance);
+
+        // 更新 UI
+        document.getElementById("sfrBalance").innerText = sfrBalance + " SFR";
+        document.getElementById("ethBalance").innerText = ethBalance + " ETH";
+    }
+}
+
 async function withdrawETH() {
     if (typeof window.ethereum !== "undefined") {
         await window.ethereum.request({ method: "eth_requestAccounts" });
@@ -612,12 +633,50 @@ async function withdrawETH() {
             // 2. Call the withdraw method from Bank.sol
             let tx = await bankContract.withdraw(ethers.utils.parseEther(withdrawAmount));
             await tx.wait();
-            alert(`Successfully withdrew ${withdrawAmount} ETH and burned an equivalent amount of SFR tokens!`);
+            alert(`You have withdrawn ${withdrawAmount} your ETH successfully.\nAn equal amount of your SFR tokens have been destroyed!`);
+
+            // **取款成功后更新余额**
+            getBalances();
         } catch (error) {
             console.error("Withdrawal failed:", error);
             alert("Withdrawal failed. Please check your SFR balance or MetaMask connection!");
         }
     } else {
-        alert("Please install MetaMask to use Web3 features.");
+        alert("请安装 MetaMask 以使用 Web3 功能");
     }
 }
+
+// **页面加载时自动获取余额**
+window.onload = getBalances;
+
+// async function withdrawETH() {
+//     if (typeof window.ethereum !== "undefined") {
+//         await window.ethereum.request({ method: "eth_requestAccounts" });
+//         const provider = new ethers.providers.Web3Provider(window.ethereum);
+//         const signer = provider.getSigner();
+//         const sfrContract = new ethers.Contract(sfrTokenAddress, sfrAbi, signer);
+//         const bankContract = new ethers.Contract(bankContractAddress, bankAbi, signer);
+
+//         let withdrawAmount = document.getElementById("withdrawAmount").value;
+//         if (!withdrawAmount || withdrawAmount <= 0) {
+//             alert("请输入有效的取款金额");
+//             return;
+//         }
+
+//         try {
+//             // 1. 先授权 Bank.sol 从用户钱包转走 SFR 代币
+//             let approveTx = await sfrContract.approve(bankContractAddress, ethers.utils.parseEther(withdrawAmount));
+//             await approveTx.wait();
+
+//             // 2. 调用 Bank.sol 的 withdraw 方法
+//             let tx = await bankContract.withdraw(ethers.utils.parseEther(withdrawAmount));
+//             await tx.wait();
+//             alert(`成功取款 ${withdrawAmount} ETH，已销毁等量 SFR！`);
+//         } catch (error) {
+//             console.error("取款失败:", error);
+//             alert("取款失败，请检查 SFR 余额或 MetaMask 连接！");
+//         }
+//     } else {
+//         alert("请安装 MetaMask 以使用 Web3 功能");
+//     }
+// }
