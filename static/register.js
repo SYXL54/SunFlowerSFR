@@ -343,10 +343,30 @@ document.addEventListener('DOMContentLoaded', function () {
             messageDiv.style.color = "blue";
 
             const tx = await contract.register(passport, singPass, addressInfo);
+            console.log("注册已提交，等待确认:", tx);
+            await tx.wait();
+            console.log("交易已确认，交易哈希:", tx.hash);
 
-            console.log("交易成功:", tx);
-            messageDiv.textContent = "注册成功！交易哈希：" + tx.transactionHash;
-            messageDiv.style.color = "green";
+            // 开始每 30s 轮询 checkRegistrationStatus 方法
+            const userAccount = data.wallet_address;  // 当前用户钱包地址
+            const pollInterval = 30000;  // 30 秒
+            const pollRegistrationStatus = async () => {
+                try {
+                    const status = await contract.checkRegistrationStatus(userAccount);
+                    console.log("当前注册状态:", status);
+                    if (status === "User successfully registered.") {
+                        // 当状态满足条件后，更新前端显示注册成功，并停止轮询
+                        messageDiv.textContent = "注册成功！交易哈希：" + tx.hash;
+                        messageDiv.style.color = "green";
+                        clearInterval(pollIntervalId);
+                        //todo:写入数据库？
+                    }
+                } catch (pollError) {
+                    console.error("检查注册状态时出错:", pollError);
+                }
+            };
+            const pollIntervalId = setInterval(pollRegistrationStatus, pollInterval);
+
         } catch (error) {
             console.error("提交注册失败:", error);
             messageDiv.textContent = "提交注册失败：" + (error.message || "请重试。");
