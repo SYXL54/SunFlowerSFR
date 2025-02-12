@@ -81,7 +81,7 @@ contract UserRegistration {
 
         emit VerificationConfirmed(msg.sender, _user, _dataType);
 
-        if (users[_user].passportVerified && users[_user].singPassVerified && users[_user].addressVerified) {
+        if (users[_user].passportVerified || users[_user].singPassVerified || users[_user].addressVerified) {
             users[_user].isRegistered = true;
             emit UserRegistered(_user, users[_user].passport, users[_user].singPass, users[_user].addressInfo);
         }
@@ -96,15 +96,13 @@ contract UserRegistration {
         if (block.timestamp > user.registrationTime + verificationTimeout) {
             return "Registration failed: Verification timeout.";
         }
-        if (!user.passportVerified) {
-            return "Registration pending: Passport verification required.";
+
+        // Check if any verification is successful
+        if (user.passportVerified || user.singPassVerified || user.addressVerified) {
+            return "User successfully registered.";
         }
-        if (!user.singPassVerified) {
-            return "Registration pending: SingPass verification required.";
-        }
-        if (!user.addressVerified) {
-            return "Registration pending: Address verification required.";
-        }
-        return "User successfully registered.";
+
+        // If none are verified
+        return "Registration pending: Passport, SingPass, or Address verification required.";
     }
 }
