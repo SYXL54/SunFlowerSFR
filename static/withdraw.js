@@ -539,7 +539,13 @@ const bankAbi = [
 		"type": "event"
 	},
 	{
-		"inputs": [],
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			}
+		],
 		"name": "rewardUser",
 		"outputs": [],
 		"stateMutability": "nonpayable",
