@@ -816,22 +816,22 @@ document.addEventListener('DOMContentLoaded', async function () {
             const userAccount = data.wallet_address;  // 当前用户钱包地址
             const pollInterval = 5000;  // 30 秒
             let register_status = true
-            const pollRegistrationStatus = async () => {
-                try {
-                    const status = await contract.checkRegistrationStatus(userAccount);
-                    console.log("当前注册状态:", status);
-                    if (status === "User successfully registered.") {
-                        register_status = true;
-                        // 当状态满足条件后，更新前端显示注册成功，并停止轮询
-                        messageDiv.textContent = "注册成功！交易哈希：" + tx.hash;
-                        messageDiv.style.color = "green";
-                        clearInterval(pollIntervalId);
-                    }
-                } catch (pollError) {
-                    console.error("检查注册状态时出错:", pollError);
-                }
-            };
-            const pollIntervalId = setInterval(pollRegistrationStatus, pollInterval);
+            // const pollRegistrationStatus = async () => {
+            //     try {
+            //         const status = await contract.checkRegistrationStatus(userAccount);
+            //         console.log("当前注册状态:", status);
+            //         if (status === "User successfully registered.") {
+            //             register_status = true;
+            //             // 当状态满足条件后，更新前端显示注册成功，并停止轮询
+            //             messageDiv.textContent = "注册成功！交易哈希：" + tx.hash;
+            //             messageDiv.style.color = "green";
+            //             clearInterval(pollIntervalId);
+            //         }
+            //     } catch (pollError) {
+            //         console.error("检查注册状态时出错:", pollError);
+            //     }
+            // };
+            // const pollIntervalId = setInterval(pollRegistrationStatus, pollInterval);
 
             // **监听轮询状态，等待成功后调用数据库**
             const waitForRegistration = async () => {
