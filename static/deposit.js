@@ -170,22 +170,23 @@ async function depositETH() {
         const signer = provider.getSigner();
         const bankContract = new ethers.Contract(bankContractAddress, bankAbi, signer);
 
-        // 获取用户输入的存款金额
+        // Get the deposit amount entered by the user
         let depositAmount = document.getElementById("depositAmount").value;
         if (!depositAmount || depositAmount <= 0) {
-            alert("请输入有效的存款金额");
+            alert("Please enter a valid deposit amount.");
             return;
         }
 
         try {
             const tx = await bankContract.deposit({ value: ethers.utils.parseEther(depositAmount) });
             await tx.wait();
-            alert(`成功存入 ${depositAmount} ETH，已获得等量 SFR 代币！`);
+            alert(`Successfully deposited ${depositAmount} ETH and received an equivalent amount of SFR tokens!`);
         } catch (error) {
-            console.error("存款失败:", error);
-            alert("存款失败，请检查 MetaMask 连接或余额！");
+            console.error("Deposit failed:", error);
+            alert("Deposit failed. Please check your MetaMask connection or balance!");
         }
     } else {
-        alert("请安装 MetaMask 以使用 Web3 功能");
+        alert("Please install MetaMask to use Web3 features.");
     }
 }
+

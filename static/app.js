@@ -1,22 +1,23 @@
-// 连接钱包函数
+// Connect Wallet Function
 async function connectWallet() {
     if (window.ethereum) {
         try {
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             const walletAddress = accounts[0];
             
-            // 显示钱包地址
+            // Display wallet address
             document.getElementById('walletAddress').innerText = walletAddress;
             document.getElementById('walletInfo').classList.remove('hidden');
         } catch (error) {
-            console.error("连接钱包失败:", error);
-            alert("连接钱包失败，请重试。");
+            console.error("Failed to connect wallet:", error);
+            alert("Failed to connect wallet. Please try again.");
         }
     } else {
-        alert("未检测到 MetaMask，请安装后刷新页面。");
+        alert("MetaMask not detected. Please install it and refresh the page.");
     }
 }
 
+// Show Modal Function
 function showModal(message, showRegisterButton) {
     document.getElementById("statusMessage").innerText = message;
     let registerBtn = document.getElementById("registerRedirect");
@@ -24,7 +25,7 @@ function showModal(message, showRegisterButton) {
     if (showRegisterButton) {
         registerBtn.style.display = "block";
         registerBtn.onclick = function() {
-            window.location.href = "{{ url_for('register_page') }}"; // 直接赋值跳转
+            window.location.href = "{{ url_for('register_page') }}"; // Direct redirection to registration page
         };
     } else {
         registerBtn.style.display = "none";
@@ -33,10 +34,12 @@ function showModal(message, showRegisterButton) {
     document.getElementById("modal").style.display = "block";
 }
 
+// Close Modal Function
 function closeModal() {
     document.getElementById("modal").style.display = "none";
 }
 
+// Login Function
 async function login() {
     const walletAddress = document.getElementById("walletAddress").innerText.trim();
     if (!walletAddress) {
@@ -49,9 +52,9 @@ async function login() {
         const result = await response.json();
 
         if (result.registered) {
-            window.location.href = "{{ url_for('main_page') }}"; // 直接跳转到主界面
+            window.location.href = "{{ url_for('main_page') }}"; // Redirect directly to the main page
         } else {
-            showModal("User not registered, please register first!", true);
+            showModal("User not registered. Please register first!", true);
         }
     } catch (error) {
         console.error("Error checking user:", error);
@@ -59,6 +62,6 @@ async function login() {
     }
 }
 
-// 绑定按钮事件
+// Bind button events
 document.getElementById('connectWalletBtn').addEventListener('click', connectWallet);
 document.getElementById('loginBtn').addEventListener('click', login);
