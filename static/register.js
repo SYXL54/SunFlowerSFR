@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     const walletAddressInput = document.getElementById('walletAddress');
     const messageDiv = document.getElementById('message');
 
@@ -299,8 +299,32 @@ document.addEventListener('DOMContentLoaded', function () {
     const savedWalletAddress = localStorage.getItem('walletAddress');
     if (savedWalletAddress) {
         walletAddressInput.value = savedWalletAddress;
-        messageDiv.textContent = "钱包地址已自动填充。";
-        messageDiv.style.color = "green";
+        messageDiv.textContent = "钱包地址已自动填充，正在检查是否已注册...";
+        messageDiv.style.color = "blue";
+
+        try {
+            // 发送请求到 Flask 服务器，检查是否已注册
+            const response = await fetch(`/check_user?address=${savedWalletAddress}`);
+            const data = await response.json();
+
+            if (data.registered) {
+                // **用户已注册，显示跳转到 Dashboard 的按钮**
+                messageDiv.textContent = "您已注册，即将前往Dashboard。";
+                messageDiv.style.color = "green";
+                console.log("User check response:", data);
+
+                setTimeout(() => {
+                    window.location.href = "/dashboard";
+                }, 2000); // **2 秒后跳转**
+            } else {
+                messageDiv.textContent = "未注册，请填写信息进行注册。";
+                messageDiv.style.color = "red";
+            }
+        } catch (error) {
+            console.error("Error checking user registration:", error);
+            messageDiv.textContent = "检查用户状态失败，请稍后重试。";
+            messageDiv.style.color = "red";
+        }
     } else {
         messageDiv.textContent = "未检测到钱包连接，请先在首页连接钱包。";
         messageDiv.style.color = "red";

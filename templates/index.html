@@ -97,12 +97,26 @@
                 document.getElementById('modal').style.display = 'none';
             };
 
-            // 登录按钮示例逻辑（可自定义）
-            window.login = function() {
-                if (savedWalletAddress) {
-                    window.location.href = '/dashboard';  // 登录后跳转到 Dashboard
-                } else {
-                    showModal("Please connect your wallet before logging in.");
+            // 登录按钮示例逻辑
+            window.login = async function() {
+                try {
+                    // **调用后端 API 检查用户是否注册**
+                    const response = await fetch(`/check_user?address=${savedWalletAddress}`);
+                    const data = await response.json();
+
+                    console.log("User check response:", data);
+
+                    if (data.registered) {
+                        window.location.href = "/dashboard";  // **用户已注册，跳转 Dashboard**
+                    } else {
+                        showModal(`
+                            <p>User not registered.</p>
+                            <button onclick="window.location.href='/register'">Go to Register</button>
+                        `);
+                    }
+                } catch (error) {
+                    console.error("Error checking user registration:", error);
+                    showModal("Failed to check registration. Please try again.");
                 }
             };
         });
