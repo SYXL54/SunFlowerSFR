@@ -526,19 +526,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             "inputs": [
                 {
                     "internalType": "address",
-                    "name": "user",
-                    "type": "address"
-                }
-            ],
-            "name": "rewardUser",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "address",
                     "name": "to",
                     "type": "address"
                 },
