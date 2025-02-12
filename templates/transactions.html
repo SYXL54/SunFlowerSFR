@@ -46,15 +46,15 @@
         }
 
         input[type="text"] {
-            width: 100%;
-            padding: 15px;
+            width: calc(100% - 30px); /* 让宽度自动适应，并留出边距 */
+            padding: 15px 20px; /* 左右增加 padding */
             margin-bottom: 20px;
             border: none;
             border-radius: 12px;
-            background: rgba(255, 255, 255, 0.2); /* Light transparent input field */
+            background: rgba(255, 255, 255, 0.2);
             color: #ffffff;
             font-size: 16px;
-            text-align: center;
+            text-align: left; /* 让文本左对齐，避免看起来太紧凑 */
             transition: all 0.3s ease;
         }
 
@@ -64,7 +64,7 @@
 
         input[type="text"]:focus {
             background: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 0 10px rgba(0, 198, 255, 0.7); /* Glowing effect on focus */
+            box-shadow: 0 0 10px rgba(0, 198, 255, 0.7);
             outline: none;
         }
 
@@ -142,7 +142,6 @@
                     <tr>
                         <th>TRANSACTION TYPE</th>
                         <th>AMOUNT</th>
-                        <!--<th>TRANSACTION HASH</th>-->
                         <th>TIMESTAMP</th>
                     </tr>
                 </thead>

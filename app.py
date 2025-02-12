@@ -127,8 +127,17 @@ def get_transactions():
         return jsonify({"success": False, "message": "缺少钱包地址参数"}), 400
 
     conn = get_transactions_db_connection()
-    transactions = conn.execute('SELECT * FROM transactions WHERE LOWER(wallet_address) = LOWER(?)', (wallet_address,)).fetchall()
+    cursor = conn.cursor()
+    test = cursor.execute("""
+            SELECT * FROM transactions
+        """).fetchone()
+    print(test)
+    transactions = cursor.execute("""
+            SELECT * FROM transactions 
+            WHERE LOWER(TRIM(wallet_address)) = LOWER(TRIM(?))
+        """, (wallet_address,)).fetchall()
     conn.close()
+    print(transactions)
 
     transactions_list = [dict(tx) for tx in transactions]
     print(transactions_list)
