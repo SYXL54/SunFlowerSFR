@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>以太坊钱包认证</title>
-    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/web3@1.7.5/dist/web3.min.js"></script>
 </head>
 <body>
     <h1>以太坊钱包认证</h1>
-    <button id="connectButton">连接钱包</button>
+    <button id="connectWalletBtn">连接钱包</button>
     <p id="status">状态：未连接</p>
 
     <script>
@@ -307,14 +308,16 @@
 	}
 ];
 
-        const connectButton = document.getElementById('connectButton');
+        const connectButton = document.getElementById('connectWalletBtn');
         const statusText = document.getElementById('status');
 
         connectButton.addEventListener('click', async () => {
-            if (typeof window.ethereum !== 'undefined') {
+            if (window.ethereum) {
                 try {
                     // 请求用户授权连接钱包
-                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    
+					const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                        const walletAddress = accounts[0];
 
                     // 创建以太坊提供者
                     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -323,7 +326,6 @@
                     const signer = provider.getSigner();
 
                     // 获取钱包地址
-                    const walletAddress = await signer.getAddress();
                     statusText.innerText = `状态：已连接，钱包地址：${walletAddress}`;
 
                     // 检查钱包地址是否在固定地址列表中
