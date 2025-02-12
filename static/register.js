@@ -2,6 +2,222 @@ document.addEventListener('DOMContentLoaded', function () {
     const walletAddressInput = document.getElementById('walletAddress');
     const messageDiv = document.getElementById('message');
 
+    const bankContractAddress = '0x41B373BE3C13fBe0Fc599082c35fF4A93bDA022B'; // Bank.sol合约地址
+    const bankAbi = [
+        {
+            "inputs": [],
+            "name": "deposit",
+            "outputs": [],
+            "stateMutability": "payable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_sfrToken",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "owner",
+                    "type": "address"
+                }
+            ],
+            "name": "OwnableInvalidOwner",
+            "type": "error"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "account",
+                    "type": "address"
+                }
+            ],
+            "name": "OwnableUnauthorizedAccount",
+            "type": "error"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "user",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "message",
+                    "type": "string"
+                }
+            ],
+            "name": "Deposit",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "previousOwner",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "newOwner",
+                    "type": "address"
+                }
+            ],
+            "name": "OwnershipTransferred",
+            "type": "event"
+        },
+        {
+            "inputs": [],
+            "name": "renounceOwnership",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "user",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                }
+            ],
+            "name": "RewardIssued",
+            "type": "event"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "user",
+                    "type": "address"
+                }
+            ],
+            "name": "rewardNewUser",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "newOwner",
+                    "type": "address"
+                }
+            ],
+            "name": "transferOwnership",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                }
+            ],
+            "name": "withdraw",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "stateMutability": "payable",
+            "type": "receive"
+        },
+        {
+            "inputs": [],
+            "name": "getBankBalance",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "owner",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "name": "receivedReward",
+            "outputs": [
+                {
+                    "internalType": "bool",
+                    "name": "",
+                    "type": "bool"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "sfrToken",
+            "outputs": [
+                {
+                    "internalType": "contract SFRToken",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        }
+    ];
+
+
     // 合约 ABI
     const contractABI = [
         {
@@ -291,7 +507,6 @@ document.addEventListener('DOMContentLoaded', function () {
             "type": "function"
         }
     ];
-
     // 合约地址
     const contractAddress = '0x3E84490CE80D946915Ce61e6A882Ea5552ff67Ea';
 
@@ -308,6 +523,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
 
+    const bankContract = new ethers.Contract(bankContractAddress, bankAbi, signer);
+    const registerContract = new ethers.Contract(contractAddress, contractABI, signer);
+
     // 初始化合约实例
     let contract;
     if (window.ethereum) {
@@ -316,8 +534,6 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
         console.error("请安装 MetaMask 或其他以太坊钱包插件！");
     }
-
-
 
     // 注册表单提交逻辑
     const registerForm = document.getElementById('registerForm');
@@ -356,8 +572,21 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.log("当前注册状态:", status);
                     if (status === "User successfully registered.") {
                         // 当状态满足条件后，更新前端显示注册成功，并停止轮询
-                        messageDiv.textContent = "注册成功！交易哈希：" + tx.hash;
+                        messageDiv.textContent = "注册成功！正在检查新用户奖励领取情况...";
                         messageDiv.style.color = "green";
+                        
+                        const userAddress = await signer.getAddress();
+                        // 检查用户是否真的注册成功
+                        const status = await registerContract.checkRegistrationStatus(userAddress);
+                        if (status !== "User successfully registered.") {
+                            console.log("用户注册状态异常，未能领取奖励！");
+                            return;
+                        }
+                        // 调用 `Bank.sol` 的 `rewardNewUser()` 领取新人奖励
+                        const rewardTx = await bankContract.rewardNewUser(userAddress);
+                        await rewardTx.wait();
+                        messageDiv.textContent = `🎉 你已注册并获得 0.005 SFR 作为新人奖励！`;
+
                         clearInterval(pollIntervalId);
                         setTimeout(() => window.location.href = '/dashboard', 1500);
                         //todo:写入数据库？
