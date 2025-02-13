@@ -109,10 +109,7 @@
                     if (data.registered) {
                         window.location.href = "/dashboard";  // **用户已注册，跳转 Dashboard**
                     } else {
-                        showModal(`
-                            <p>User not registered.</p>
-                            <button onclick="window.location.href='/register'">Go to Register</button>
-                        `);
+                        showModal("User not registered");
                     }
                 } catch (error) {
                     console.error("Error checking user registration:", error);
