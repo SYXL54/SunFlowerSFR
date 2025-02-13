@@ -296,7 +296,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const contractAddress = '0x3E84490CE80D946915Ce61e6A882Ea5552ff67Ea';
 
     // sfr
-    const sfrTokenAddress = "0x181969925bb882256775f17a363654def0c419b6"; // SFRToken合约地址
+    const sfrTokenAddress = "0x638a42c5f6f16fa3ee53985d9bf10704b19379b5"; // SFRToken合约地址
     const sfrAbi = [
         {
             "inputs": [],

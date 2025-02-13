@@ -1,5 +1,5 @@
 // withdraw.js - 取款逻辑
-const sfrTokenAddress = "0x181969925bb882256775f17a363654def0c419b6"; // SFRToken合约地址
+const sfrTokenAddress = "0x638a42c5f6f16fa3ee53985d9bf10704b19379b5"; // SFRToken合约地址
 const sfrAbi = [
 	{
 		"inputs": [],
@@ -352,7 +352,7 @@ const sfrAbi = [
 	}
 ];
 
-const bankContractAddress = "0xbbca5284b7440c7e6fba6386e91d143b9703dc37"; // Bank.sol合约地址
+const bankContractAddress = "0xcc5c4b00d51e7236d69a06149a9b9e264760c542"; // Bank.sol合约地址
 const bankAbi = [
 	{
 		"inputs": [
