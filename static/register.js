@@ -653,7 +653,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const savedWalletAddress = localStorage.getItem('walletAddress');
     if (savedWalletAddress) {
         walletAddressInput.value = savedWalletAddress;
-        messageDiv.textContent = "钱包地址已自动填充，正在检查是否已注册...";
+        messageDiv.textContent = "The wallet address has been automatically filled in, checking whether it is registered...";
         messageDiv.style.color = "blue";
 
         try {
@@ -663,7 +663,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             if (data.registered) {
                 // **用户已注册，显示跳转到 Dashboard 的按钮**
-                messageDiv.textContent = "您已注册，即将前往Dashboard。";
+                messageDiv.textContent = "You have registered and will be redirected to the Dashboard.";
                 messageDiv.style.color = "green";
                 console.log("User check response:", data);
 
@@ -671,16 +671,16 @@ document.addEventListener('DOMContentLoaded', async function () {
                     window.location.href = "/dashboard";
                 }, 2000); // **2 秒后跳转**
             } else {
-                messageDiv.textContent = "未注册，请填写信息进行注册。";
+                messageDiv.textContent = "Not registered, please fill in the information to register.";
                 messageDiv.style.color = "red";
             }
         } catch (error) {
             console.error("Error checking user registration:", error);
-            messageDiv.textContent = "检查用户状态失败，请稍后重试。";
+            messageDiv.textContent = "Failed to check user status, please try again later.";
             messageDiv.style.color = "red";
         }
     } else {
-        messageDiv.textContent = "未检测到钱包连接，请先在首页连接钱包。";
+        messageDiv.textContent = "No wallet connection detected, please connect your wallet on the home page first.";
         messageDiv.style.color = "red";
     }
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -692,7 +692,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const web3 = new Web3(window.ethereum);
         contract = new ethers.Contract(contractAddress, contractABI, signer);
     } else {
-        console.error("请安装 MetaMask 或其他以太坊钱包插件！");
+        console.error("Please install MetaMask or other Ethereum wallet plugin!");
     }
 
 
@@ -711,19 +711,19 @@ document.addEventListener('DOMContentLoaded', async function () {
         const data = Object.fromEntries(formData.entries());
 
         if (!data.wallet_address) {
-            messageDiv.textContent = "请先连接钱包再注册。";
+            messageDiv.textContent = "Please connect your wallet before registering.";
             messageDiv.style.color = "red";
             return;
         }
         try {
             // 调用智能合约的 register 方法
-            messageDiv.textContent = "正在提交注册，请稍候...";
+            messageDiv.textContent = "Submitting registration, please wait...";
             messageDiv.style.color = "blue";
 
             const tx = await contract.register(passport, singPass, addressInfo);
-            console.log("注册已提交，等待确认:", tx);
+            console.log("Registration submitted, awaiting confirmation:", tx);
             await tx.wait();
-            console.log("交易已确认，交易哈希:", tx.hash);
+            console.log("Transaction confirmed, transaction hash:", tx.hash);
 
             // 开始每 5s 轮询 checkRegistrationStatus 方法
             const userAccount = data.wallet_address;  // 当前用户钱包地址
@@ -732,16 +732,16 @@ document.addEventListener('DOMContentLoaded', async function () {
             const pollRegistrationStatus = async () => {
                 try {
                     const status = await contract.checkRegistrationStatus(userAccount);
-                    console.log("当前注册状态:", status);
+                    console.log("Current registration status:", status);
                     if (status === "User successfully registered.") {
                         register_status = true;
                         // 当状态满足条件后，更新前端显示注册成功，并停止轮询
-                        messageDiv.textContent = "注册成功！交易哈希：" + tx.hash;
+                        messageDiv.textContent = "Registration successful! Transaction hash:" + tx.hash;
                         messageDiv.style.color = "green";
                         clearInterval(pollIntervalId);
                     }
                 } catch (pollError) {
-                    console.error("检查注册状态时出错:", pollError);
+                    console.error("Error checking registration status:", pollError);
                 }
             };
             const pollIntervalId = setInterval(pollRegistrationStatus, pollInterval);
@@ -749,11 +749,11 @@ document.addEventListener('DOMContentLoaded', async function () {
             // **监听轮询状态，等待成功后调用数据库**
             const waitForRegistration = async () => {
                 while (!register_status) {
-                    console.log("等待注册成功...");
+                    console.log("Waiting for registration to succeed...");
                     await new Promise(resolve => setTimeout(resolve, 1000)); // **等待 1 秒再检查**
                 }
 
-                console.log("注册成功，开始写入数据库...");
+                console.log("Registration is successful, start writing to the database...");
 
                 // **注册成功后，调用后端 API 将数据存入数据库**
                 const response = await fetch("/register_user", {
@@ -811,15 +811,15 @@ document.addEventListener('DOMContentLoaded', async function () {
                         alert("Please install MetaMask to use Web3 features.");
                     }
                 } else {
-                    messageDiv.textContent = "数据库写入失败：" + result.error;
+                    messageDiv.textContent = "Database write failed:" + result.error;
                     messageDiv.style.color = "red";
                 }
             };
 
             waitForRegistration();
         } catch (error) {
-            console.error("提交注册失败:", error);
-            messageDiv.textContent = "提交注册失败：" + (error.message || "请重试。");
+            console.error("Submit registration failed:", error);
+            messageDiv.textContent = "Submit registration failed:" + (error.message || "Please try again.");
             messageDiv.style.color = "red";
         }
     });
