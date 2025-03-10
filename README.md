@@ -1,8 +1,10 @@
 # SunFlowerSFR
 欢迎来嗑瓜子儿~~~
 
-1. 链上 KYC（On-Chain KYC）
+链上 KYC（On-Chain KYC）
+
 链上 KYC 是指用户的 KYC 认证结果被存储在区块链上，并结合 DID（去中心化身份），实现可复用、无需信任第三方的 KYC 验证。
+
 📌 On-Chain KYC 工作流程
 
 用户提交 KYC 资料（身份证、护照、地址证明等）给 KYC 提供商（如 Civic、Synaps）。
