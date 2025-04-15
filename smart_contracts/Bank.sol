@@ -7,7 +7,7 @@ import "./SFRToken.sol";  // 导入 SFR 代币合约
 contract Bank {
     SFRToken public sfrToken;  // 代币合约实例
 
-       
+
 
     event Deposit(address indexed user, uint256 amount, string message); // 记录存款日志，铸造失败原因排查
     // event RewardIssued(address indexed user, uint256 amount);  // 记录奖励事件

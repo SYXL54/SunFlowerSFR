@@ -16,6 +16,7 @@ KYC 提供商验证身份 并在链上生成一个 KYC 认证凭证（可存储�
 
 # 项目框架
 ![image](https://github.com/user-attachments/assets/a0911d41-25c5-4377-b077-2f41cdf5826c)
+![alt text](image.png)
 
 
 # 项目video
